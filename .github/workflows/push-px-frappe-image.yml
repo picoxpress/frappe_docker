@@ -1,0 +1,45 @@
+name: main
+'on':
+  push:
+    branches:
+      - master
+      - main
+
+env:
+  REGISTRY_NAME: picoxpresscr
+  IMAGE_NAME: px-erp-next
+
+jobs:
+  build:
+    runs-on:
+      - self-hosted
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          path: master
+      - name: registry-login
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.REGISTRY_NAME }}.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: export-app-base64-repr
+        run: |
+          export APPS_JSON_BASE64=$(base64 picoxpress/apps.json)
+        working-directory: ./
+      - name: image-build-push
+        if: ${{ (contains(github.event.head_commit.message, '#push-frappe-image')) }}
+        run: |
+          docker build \
+          --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
+          --build-arg=FRAPPE_BRANCH=version-14 \
+          --build-arg=PYTHON_VERSION=3.10.12 \
+          --build-arg=NODE_VERSION=16.20.1 \
+          --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
+          --tag=${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          --file=picoxpress/images/px-erp-next/Containerfile .
+          docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          docker tag ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest
+        working-directory: ./
