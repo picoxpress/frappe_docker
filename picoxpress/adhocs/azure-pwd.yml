@@ -36,12 +36,12 @@ services:
         bench set-config -g rq_username default;
         bench set-config -g rq_password 24fM8JkZUjXLvjdgQjzRkzvvotu0UKGGhAzCaAsgLx4=;
     environment:
-      DB_PASSWORD: "Dev@2023"
+      DB_PASSWORD: "<password>"
       DB_HOST: "px-postgresql-test.postgres.database.azure.com"
       DB_PORT: "5432"
-      REDIS_CACHE: "redis://default:24fM8JkZUjXLvjdgQjzRkzvvotu0UKGGhAzCaAsgLx4=@px-redis-test.redis.cache.windows.net:6379"
+      REDIS_CACHE: "<cache_url>"
       REDIS_QUEUE: "px-redis-test.redis.cache.windows.net:6379"
-      REDIS_SOCKETIO: "redis://default:24fM8JkZUjXLvjdgQjzRkzvvotu0UKGGhAzCaAsgLx4=@px-redis-test.redis.cache.windows.net:6379"
+      REDIS_SOCKETIO: "<socket_redis_url>"
       SOCKETIO_PORT: "9000"
     volumes:
       - sites:/home/frappe/frappe-bench/sites
@@ -76,7 +76,7 @@ services:
           fi
         done;
         echo "sites/common_site_config.json found";
-        bench new-site frontend --db-type postgres --db-host px-postgresql-test.postgres.database.azure.com --db-port 5432 --db-root-username postgres --db-root-password Dev@2023 --admin-password=admin --install-app erpnext --set-default --verbose;
+        bench new-site frontend --db-type postgres --db-host px-postgresql-test.postgres.database.azure.com --db-port 5432 --db-root-username postgres --db-root-password <password> --admin-password=admin --install-app erpnext --set-default --verbose;
     networks:
       - erpnext
 
