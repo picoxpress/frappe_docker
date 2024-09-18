@@ -1,10 +1,18 @@
 [
   {
-    "url": "https://github.com/frappe/erpnext.git",
-    "branch": "version-14"
+    "url": "https://github.com/picoxpress/erpnext.git",
+    "branch": "version-14-postgres"
   },
   {
-    "url": "https://github.com/frappe/helpdesk.git",
-    "branch": "version-14"
+    "url": "https://github.com/picoxpress/helpdesk.git",
+    "branch": "version-14-postgres"
+  },
+  {
+    "url": "https://github.com/picoxpress/hrms.git",
+    "branch": "version-14-postgres"
+  },
+  {
+    "url": "https://<git_username>:<github_personal_token>@github.com/picoxpress/picoxpress-frappe.git",
+    "branch": "main"
   }
 ]

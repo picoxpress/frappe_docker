@@ -95,6 +95,8 @@ RUN apt-get update \
     libbz2-dev \
     && rm -rf /var/lib/apt/lists/*
 
+ARG CACHEBUST=1
+
 # apps.json includes
 ARG APPS_JSON_BASE64
 RUN if [ -n "${APPS_JSON_BASE64}" ]; then \
@@ -144,6 +146,7 @@ CMD [ \
   "--worker-class=gthread", \
   "--worker-tmp-dir=/dev/shm", \
   "--timeout=120", \
+  "--limit-request-line=0", \
   "--preload", \
   "frappe.app:application" \
 ]
