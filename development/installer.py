@@ -229,8 +229,11 @@ def create_site_in_bench(args):
         ]
     apps = os.listdir(f"{os.getcwd()}/{args.bench_name}/apps")
     apps.remove("frappe")
-    for app in apps:
-        new_site_cmd.append(f"--install-app={app}")
+    new_site_cmd.append(f"--install-app=erpnext")
+    new_site_cmd.append(f"--install-app=helpdesk")
+    new_site_cmd.append(f"--install-app=picoxpress")
+    new_site_cmd.append(f"--install-app=hrms")
+
     new_site_cmd.append(args.site_name)
     cprint(f"Creating Site {args.site_name} ...", level=2)
     subprocess.call(
